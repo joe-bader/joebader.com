@@ -132,12 +132,29 @@
   const form = document.getElementById('contact-form');
   const formFeedback = document.getElementById('form-feedback');
   const recaptchaSiteKey = form?.dataset.recaptchaSiteKey;
+  let recaptchaLoaded = false;
 
-  if (recaptchaSiteKey && recaptchaSiteKey !== 'YOUR_RECAPTCHA_SITE_KEY') {
+  function loadRecaptcha() {
+    if (!recaptchaSiteKey || recaptchaSiteKey === 'YOUR_RECAPTCHA_SITE_KEY' || recaptchaLoaded) return;
+    recaptchaLoaded = true;
     const script = document.createElement('script');
     script.src = `https://www.google.com/recaptcha/api.js?render=${recaptchaSiteKey}`;
     script.async = true;
     document.head.appendChild(script);
+  }
+
+  if (form && recaptchaSiteKey && recaptchaSiteKey !== 'YOUR_RECAPTCHA_SITE_KEY') {
+    form.addEventListener('focusin', loadRecaptcha, { once: true });
+    const contactSection = document.getElementById('contact');
+    if (contactSection && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) loadRecaptcha();
+        },
+        { rootMargin: '100px', threshold: 0 }
+      );
+      observer.observe(contactSection);
+    }
   }
 
   async function getRecaptchaToken() {
