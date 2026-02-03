@@ -1,8 +1,9 @@
 /* ============================================
-   Design System - Dark Theme Resume Site
+   Design System - Dark Theme (default)
    ============================================ */
 
-:root {
+:root,
+[data-theme="dark"] {
   /* Colors - muted, low-contrast palette */
   --color-bg: #0f0f12;
   --color-bg-rgb: 15, 15, 18;
@@ -24,6 +25,21 @@
   --input-bg-hover: rgba(255, 255, 255, 0.06);
   --input-border: rgba(255, 255, 255, 0.1);
   --input-border-hover: rgba(255, 255, 255, 0.15);
+
+  /* Body gradients */
+  --gradient-1: radial-gradient(ellipse 100% 80% at 50% -30%, rgba(20, 184, 166, 0.28), transparent 50%);
+  --gradient-2: radial-gradient(ellipse 70% 50% at 100% 20%, rgba(99, 102, 241, 0.22), transparent 60%);
+  --gradient-3: radial-gradient(ellipse 60% 50% at 0% 60%, rgba(6, 182, 212, 0.2), transparent 55%);
+  --gradient-4: radial-gradient(ellipse 50% 40% at 80% 100%, rgba(139, 92, 246, 0.18), transparent 50%);
+
+  /* Form feedback */
+  --color-success-bg: rgba(107, 154, 122, 0.1);
+  --color-success-border: var(--color-accent-emerald);
+  --color-error-bg: rgba(180, 100, 100, 0.1);
+  --color-error-text: #b88a8a;
+
+  /* Hero name gradient */
+  --hero-name-mid: #9a9aa0;
 
   /* Scroll offset for sticky header */
   --scroll-margin: calc(var(--header-height) + var(--space-lg));
@@ -52,6 +68,44 @@
 }
 
 /* ============================================
+   Light Theme
+   ============================================ */
+
+[data-theme="light"] {
+  --color-bg: #f5f5f7;
+  --color-bg-rgb: 245, 245, 247;
+  --color-bg-elevated: #ffffff;
+  --color-text: #1a1a1e;
+  --color-text-muted: #5a5a62;
+  --color-accent: #4a7ab8;
+  --color-accent-rgb: 74, 122, 184;
+  --color-accent-hover: #5a8ac8;
+  --color-accent-cyan: #4a8a8e;
+  --color-accent-amber: #8a724b;
+  --color-accent-violet: #6b5c88;
+  --color-accent-emerald: #4a7a5a;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-focus: var(--color-accent);
+
+  --input-bg: rgba(0, 0, 0, 0.04);
+  --input-bg-hover: rgba(0, 0, 0, 0.06);
+  --input-border: rgba(0, 0, 0, 0.12);
+  --input-border-hover: rgba(0, 0, 0, 0.2);
+
+  --gradient-1: radial-gradient(ellipse 100% 80% at 50% -30%, rgba(20, 184, 166, 0.15), transparent 50%);
+  --gradient-2: radial-gradient(ellipse 70% 50% at 100% 20%, rgba(99, 102, 241, 0.12), transparent 60%);
+  --gradient-3: radial-gradient(ellipse 60% 50% at 0% 60%, rgba(6, 182, 212, 0.1), transparent 55%);
+  --gradient-4: radial-gradient(ellipse 50% 40% at 80% 100%, rgba(139, 92, 246, 0.1), transparent 50%);
+
+  --color-success-bg: rgba(74, 122, 90, 0.12);
+  --color-success-border: var(--color-accent-emerald);
+  --color-error-bg: rgba(160, 80, 80, 0.12);
+  --color-error-text: #a06a6a;
+
+  --hero-name-mid: #6a6a70;
+}
+
+/* ============================================
    Reset & Base
    ============================================ */
 
@@ -72,12 +126,9 @@ body {
   line-height: 1.65;
   color: var(--color-text);
   background-color: var(--color-bg);
-  background-image:
-    radial-gradient(ellipse 100% 80% at 50% -30%, rgba(20, 184, 166, 0.28), transparent 50%),
-    radial-gradient(ellipse 70% 50% at 100% 20%, rgba(99, 102, 241, 0.22), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 0% 60%, rgba(6, 182, 212, 0.2), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 80% 100%, rgba(139, 92, 246, 0.18), transparent 50%);
+  background-image: var(--gradient-1), var(--gradient-2), var(--gradient-3), var(--gradient-4);
   -webkit-font-smoothing: antialiased;
+  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 /* ============================================
@@ -116,7 +167,7 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border);
-  transition: background var(--transition-base);
+  transition: background var(--transition-base), border-color var(--transition-base);
 
   &.scrolled {
     background: rgba(var(--color-bg-rgb), 0.92);
@@ -151,12 +202,74 @@ body {
   }
 }
 
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.theme-toggle svg {
+  display: block;
+}
+
+.theme-toggle:hover {
+  color: var(--color-accent);
+  background: rgba(var(--color-accent-rgb), 0.1);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.theme-toggle-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--transition-fast);
+}
+
+.theme-toggle-icon--sun {
+  opacity: 1;
+}
+
+.theme-toggle-icon--moon {
+  opacity: 0;
+}
+
+[data-theme="light"] .theme-toggle-icon--sun {
+  opacity: 0;
+}
+
+[data-theme="light"] .theme-toggle-icon--moon {
+  opacity: 1;
+}
+
 .nav-links {
   display: flex;
+  align-items: center;
   gap: var(--space-xl);
   list-style: none;
   margin: 0;
   padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+  }
 
   @media (max-width: 768px) {
     gap: var(--space-lg);
@@ -277,7 +390,7 @@ main {
   letter-spacing: 0.14em;
   margin: 0 0 var(--space-lg);
   line-height: 1.1;
-  background: linear-gradient(135deg, var(--color-text) 0%, #9a9aa0 60%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, var(--color-text) 0%, var(--hero-name-mid) 60%, var(--color-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -670,17 +783,17 @@ main {
   font-size: 0.9375rem;
 
   &.success {
-    background: rgba(107, 154, 122, 0.1);
-    color: var(--color-accent-emerald);
+    background: var(--color-success-bg);
+    color: var(--color-success-border);
     border: none;
-    border-left: 3px solid var(--color-accent-emerald);
+    border-left: 3px solid var(--color-success-border);
   }
 
   &.error {
-    background: rgba(180, 100, 100, 0.1);
-    color: #b88a8a;
+    background: var(--color-error-bg);
+    color: var(--color-error-text);
     border: none;
-    border-left: 3px solid #b88a8a;
+    border-left: 3px solid var(--color-error-text);
   }
 }
 

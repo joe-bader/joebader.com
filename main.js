@@ -1,10 +1,51 @@
 /**
  * joebader.com - Resume Site
- * Nav, smooth scroll, accordion, form handling, scroll animations
+ * Nav, smooth scroll, accordion, form handling, scroll animations, theme toggle
  */
 
 (function () {
   'use strict';
+
+  const THEME_KEY = 'theme';
+
+  // ============================================
+  // Theme toggle (OS preference + manual override)
+  // ============================================
+
+  function getPreferredTheme() {
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
+  }
+
+  function useSystemTheme() {
+    const theme = getPreferredTheme();
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.removeItem(THEME_KEY);
+  }
+
+  function toggleTheme(e) {
+    if (e.detail === 2) {
+      useSystemTheme();
+      return;
+    }
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  }
+
+  const themeToggle = document.querySelector('.theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', toggleTheme);
+  }
+
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+    if (!localStorage.getItem(THEME_KEY)) {
+      document.documentElement.setAttribute('data-theme', e.matches ? 'light' : 'dark');
+    }
+  });
 
   // ============================================
   // Header scroll state
