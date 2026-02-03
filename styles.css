@@ -9,10 +9,10 @@
   --color-bg-rgb: 15, 15, 18;
   --color-bg-elevated: #16161a;
   --color-text: #c8c8cd;
-  --color-text-muted: #8e8e95;
-  --color-accent: #6b8fc4;
-  --color-accent-rgb: 107, 143, 196;
-  --color-accent-hover: #7fa3d4;
+  --color-text-muted: #a0a0a8;
+  --color-accent: #7fa3d4;
+  --color-accent-rgb: 127, 163, 212;
+  --color-accent-hover: #8fb4e0;
   --color-accent-cyan: #6b9a9e;
   --color-accent-amber: #a8926b;
   --color-accent-violet: #8b7ca8;
@@ -39,7 +39,7 @@
   --color-error-text: #b88a8a;
 
   /* Hero name gradient */
-  --hero-name-mid: #9a9aa0;
+  --hero-name-mid: #b0b0b8;
 
   /* Scroll offset for sticky header */
   --scroll-margin: calc(var(--header-height) + var(--space-lg));
@@ -76,10 +76,10 @@
   --color-bg-rgb: 245, 245, 247;
   --color-bg-elevated: #ffffff;
   --color-text: #1a1a1e;
-  --color-text-muted: #5a5a62;
-  --color-accent: #4a7ab8;
-  --color-accent-rgb: 74, 122, 184;
-  --color-accent-hover: #5a8ac8;
+  --color-text-muted: #4a4a52;
+  --color-accent: #3d6ba3;
+  --color-accent-rgb: 61, 107, 163;
+  --color-accent-hover: #4a7ab8;
   --color-accent-cyan: #4a8a8e;
   --color-accent-amber: #8a724b;
   --color-accent-violet: #6b5c88;
@@ -102,7 +102,7 @@
   --color-error-bg: rgba(160, 80, 80, 0.12);
   --color-error-text: #a06a6a;
 
-  --hero-name-mid: #6a6a70;
+  --hero-name-mid: #5a5a60;
 }
 
 /* ============================================
@@ -207,8 +207,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
+  min-width: 44px;
+  min-height: 44px;
+  width: 2.75rem;
+  height: 2.75rem;
   padding: 0;
   margin: 0;
   line-height: 1;
@@ -281,6 +283,10 @@ body {
 
   a {
     position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 var(--space-sm);
     color: var(--color-text-muted);
     text-decoration: none;
     font-size: 0.9375rem;
@@ -767,7 +773,11 @@ main {
       outline: none;
       background: var(--input-bg-hover);
       border-color: var(--color-accent);
-      box-shadow: 0 0 0 3px rgba(var(--color-accent-rgb), 0.2);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
     }
   }
 
@@ -853,6 +863,24 @@ main {
   &.visible {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* ============================================
+   Reduced Motion (Accessibility)
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

@@ -165,6 +165,7 @@
     const json = await response.json();
 
     if (response.ok) {
+      formFeedback.setAttribute('aria-live', 'polite');
       formFeedback.textContent = 'Thanks for your submission!';
       formFeedback.classList.add('success');
       form.reset();
@@ -176,6 +177,7 @@
       return submitForm(retryCount + 1);
     }
 
+    formFeedback.setAttribute('aria-live', 'assertive');
     if (Object.hasOwn(json, 'errors')) {
       formFeedback.textContent = json.errors.map((err) => err.message).join(', ');
     } else {
@@ -189,20 +191,29 @@
       e.preventDefault();
 
       const submitBtn = form.querySelector('.form-submit');
-      if (submitBtn) submitBtn.disabled = true;
-
+      const originalBtnText = submitBtn?.textContent;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      }
+      form.setAttribute('aria-busy', 'true');
       formFeedback.hidden = true;
       formFeedback.classList.remove('success', 'error');
 
       try {
         await submitForm();
       } catch {
+        formFeedback.setAttribute('aria-live', 'assertive');
         formFeedback.textContent = 'Oops! There was a problem submitting your form';
         formFeedback.classList.add('error');
       }
 
       formFeedback.hidden = false;
-      if (submitBtn) submitBtn.disabled = false;
+      form.setAttribute('aria-busy', 'false');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText || 'Send Message';
+      }
     });
   }
 
@@ -210,8 +221,9 @@
   // Scroll-triggered fade-in
   // ============================================
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const fadeElements = document.querySelectorAll('.section, .hero, .experience-card');
-  if (fadeElements.length && 'IntersectionObserver' in window) {
+  if (fadeElements.length && 'IntersectionObserver' in window && !prefersReducedMotion) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
