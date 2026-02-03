@@ -1,11 +1,37 @@
+/*
+ *
+ * ______/\\\\\\\\\\\_________________________________________/\\\\\\\\\\\\\__________________________/\\\_______________________________        
+ * _____\/////\\\///_________________________________________\/\\\/////////\\\_______________________\/\\\_______________________________       
+ *  _________\/\\\____________________________________________\/\\\_______\/\\\_______________________\/\\\_______________________________      
+ *   _________\/\\\_________/\\\\\________/\\\\\\\\____________\/\\\\\\\\\\\\\\___/\\\\\\\\\___________\/\\\______/\\\\\\\\___/\\/\\\\\\\__     
+ *    _________\/\\\_______/\\\///\\\____/\\\/////\\\___________\/\\\/////////\\\_\////////\\\_____/\\\\\\\\\____/\\\/////\\\_\/\\\/////\\\_    
+ *     _________\/\\\______/\\\__\//\\\__/\\\\\\\\\\\____________\/\\\_______\/\\\___/\\\\\\\\\\___/\\\////\\\___/\\\\\\\\\\\__\/\\\___\///__   
+ *      __/\\\___\/\\\_____\//\\\__/\\\__\//\\///////_____________\/\\\_______\/\\\__/\\\/////\\\__\/\\\__\/\\\__\//\\///////___\/\\\_________  
+ *       _\//\\\\\\\\\_______\///\\\\\/____\//\\\\\\\\\\___________\/\\\\\\\\\\\\\/__\//\\\\\\\\/\\_\//\\\\\\\/\\__\//\\\\\\\\\\_\/\\\_________ 
+ *        __\/////////__________\/////_______\//////////____________\/////////////_____\////////\//___\///////\//____\//////////__\///__________
+ *
+ *         To reviewers: Thanks for looking. Reach out via the contact form if you'd like to connect.
+ *
+ * joebader.com - Resume Site
+ *
+ * Structure: Design system (CSS variables) at the top, then layout and components.
+ * Theme switching works by toggling data-theme on <html>; we override variables in
+ * [data-theme="light"]. All colors/spacing use variables so one change updates everywhere.
+ */
+
 /* ============================================
    Design System - Dark Theme (default)
-   ============================================ */
+   ============================================
+   :root = the <html> element. We also target [data-theme="dark"] so both apply when
+   no theme is set (dark is default) or when the user has explicitly chosen dark.
+   CSS custom properties (variables) use --name. Referenced with var(--name). */
 
 :root,
 [data-theme="dark"] {
   /* Colors - muted, low-contrast palette */
   --color-bg: #0f0f12;
+  /* RGB values stored separately so we can use them in rgba(rgb, 0.8) for transparency.
+     rgba() needs numbers, not a hex string. */
   --color-bg-rgb: 15, 15, 18;
   --color-bg-elevated: #16161a;
   --color-text: #c8c8cd;
@@ -26,7 +52,8 @@
   --input-border: rgba(255, 255, 255, 0.1);
   --input-border-hover: rgba(255, 255, 255, 0.15);
 
-  /* Body gradients */
+  /* Body gradients - layered for depth. radial-gradient(shape size at position, color stops).
+     Multiple gradients stack; we use several with low opacity for a subtle effect. */
   --gradient-1: radial-gradient(ellipse 100% 80% at 50% -30%, rgba(20, 184, 166, 0.28), transparent 50%);
   --gradient-2: radial-gradient(ellipse 70% 50% at 100% 20%, rgba(99, 102, 241, 0.22), transparent 60%);
   --gradient-3: radial-gradient(ellipse 60% 50% at 0% 60%, rgba(6, 182, 212, 0.2), transparent 55%);
@@ -41,10 +68,11 @@
   /* Hero name gradient */
   --hero-name-mid: #b0b0b8;
 
-  /* Scroll offset for sticky header */
+  /* scroll-margin-top on sections: when you scroll to a section (e.g. #summary), the
+     browser offsets the scroll position so content isn't hidden under the sticky header. */
   --scroll-margin: calc(var(--header-height) + var(--space-lg));
 
-  /* Typography */
+  /* Typography - font stack: try first font, fall back to next. system-ui = OS default. */
   --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
   --font-display: "Exo 2", var(--font-sans);
@@ -69,7 +97,9 @@
 
 /* ============================================
    Light Theme
-   ============================================ */
+   ============================================
+   When <html> has data-theme="light", these values override the :root ones. We only
+   redefine what changes; variables we don't touch (e.g. --max-width) keep their values. */
 
 [data-theme="light"] {
   --color-bg: #f5f5f7;
@@ -109,12 +139,15 @@
    Reset & Base
    ============================================ */
 
+/* box-sizing: border-box means width/height include padding and border. Without it,
+   adding padding would make elements wider than you expect. * applies to all elements. */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
+/* scroll-behavior: smooth makes anchor links and scrollIntoView animate instead of jump. */
 html {
   scroll-behavior: smooth;
 }
@@ -126,18 +159,23 @@ body {
   line-height: 1.65;
   color: var(--color-text);
   background-color: var(--color-bg);
+  /* Multiple background images stack; first listed is on top. */
   background-image: var(--gradient-1), var(--gradient-2), var(--gradient-3), var(--gradient-4);
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased; /* Softer text rendering on macOS. */
+  /* transition: when theme switches, colors animate instead of snapping. */
   transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 /* ============================================
    Skip Link (Accessibility)
-   ============================================ */
+   ============================================
+   A "skip to main content" link for keyboard/screen reader users. It's off-screen
+   (top: -100%) until focused, then moves into view. First tab focuses it; Enter
+   jumps to #main. Required for WCAG compliance. */
 
 .skip-link {
   position: absolute;
-  top: -100%;
+  top: -100%; /* Off-screen; only visible when :focus moves it. */
   left: var(--space-md);
   padding: var(--space-md) var(--space-lg);
   background: var(--color-accent);
@@ -148,6 +186,8 @@ body {
   border-radius: 4px;
   transition: top var(--transition-fast);
 
+  /* :focus fires when the element receives focus (e.g. Tab). We use :focus-visible
+     elsewhere to avoid showing focus rings on mouse click; here we want it always. */
   &:focus {
     top: var(--space-md);
     outline: 2px solid var(--color-accent);
@@ -157,18 +197,24 @@ body {
 
 /* ============================================
    Site Header (Sticky)
-   ============================================ */
+   ============================================
+   position: sticky = element scrolls with the page until it hits top: 0, then stays
+   fixed. Unlike position: fixed, it doesn't leave a gap in the layout. */
 
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 50; /* Above content; below modals (typically 100+). */
+  /* rgba(var(--color-bg-rgb), 0.8) = use our RGB values with 80% opacity. Needed
+     because we can't do opacity on hex. */
   background: rgba(var(--color-bg-rgb), 0.8);
+  /* backdrop-filter blurs content behind the element. -webkit- for Safari. */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border);
   transition: background var(--transition-base), border-color var(--transition-base);
 
+  /* .scrolled is added by JS when user has scrolled. Slightly more opaque for contrast. */
   &.scrolled {
     background: rgba(var(--color-bg-rgb), 0.92);
   }
@@ -177,12 +223,13 @@ body {
 .nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-between; /* Logo left, links right. */
   max-width: var(--max-width);
   margin: 0 auto;
   padding: var(--space-md) var(--space-xl);
   height: var(--header-height);
 
+  /* Media query: apply these rules only when viewport is 768px or narrower. */
   @media (max-width: 768px) {
     padding: var(--space-md) var(--space-lg);
   }
@@ -203,10 +250,11 @@ body {
 }
 
 .theme-toggle {
-  position: relative;
+  position: relative; /* Children (icons) are position: absolute; need a positioned parent. */
   display: flex;
   align-items: center;
   justify-content: center;
+  /* 44px minimum = touch target size for accessibility (WCAG 2.5.5). */
   min-width: 44px;
   min-height: 44px;
   width: 2.75rem;
@@ -231,6 +279,8 @@ body {
   background: rgba(var(--color-accent-rgb), 0.1);
 }
 
+/* focus-visible: show outline only for keyboard focus, not mouse click. Avoids the
+   "flash" of outline when you click a button. */
 .theme-toggle:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
@@ -240,10 +290,13 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
+  /* translate(-50%, -50%) centers the icon; top/left alone would put top-left at center. */
   transform: translate(-50%, -50%);
   transition: opacity var(--transition-fast);
 }
 
+/* One icon visible per theme. We toggle opacity instead of display so we can
+   transition between them. Sun = dark mode (default), moon = light mode. */
 .theme-toggle-icon--sun {
   opacity: 1;
 }
@@ -263,8 +316,8 @@ body {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: var(--space-xl);
-  list-style: none;
+  gap: var(--space-xl); /* Space between flex items; no need for margin on each. */
+  list-style: none; /* Remove bullet points from <ul>. */
   margin: 0;
   padding: 0;
 
@@ -285,7 +338,7 @@ body {
     position: relative;
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    min-height: 44px; /* Touch target size. */
     padding: 0 var(--space-sm);
     color: var(--color-text-muted);
     text-decoration: none;
@@ -297,10 +350,12 @@ body {
       color: var(--color-accent);
     }
 
+    /* nav-link--active is added by JS for the section currently in view. */
     &.nav-link--active {
       color: var(--color-text);
       font-weight: 600;
 
+      /* ::after creates a pseudo-element (no HTML needed). content: "" required for it to show. */
       &::after {
         content: "";
         display: block;
@@ -332,10 +387,11 @@ body {
 
 main {
   max-width: var(--max-width);
-  margin: 0 auto;
+  margin: 0 auto; /* Center the block when viewport is wider than max-width. */
   padding: var(--space-3xl) var(--space-xl);
-  scroll-margin-top: var(--scroll-margin);
+  scroll-margin-top: var(--scroll-margin); /* Offset when #main is scrolled into view. */
 
+  /* Nested selectors: .section and .hero inside main get scroll-margin too. */
   .section,
   .hero {
     scroll-margin-top: var(--scroll-margin);
@@ -365,6 +421,7 @@ main {
   align-items: center;
   gap: var(--space-md);
 
+  /* &::before = pseudo-element before the heading text. & is the parent selector (nesting). */
   &::before {
     content: "";
     width: 2rem;
@@ -391,13 +448,15 @@ main {
 
 .hero-name {
   font-family: var(--font-display);
+  /* clamp(min, preferred, max): 6vw scales with viewport; never smaller than 2.5rem or larger than 3.5rem. */
   font-size: clamp(2.5rem, 6vw, 3.5rem);
   font-weight: 300;
   letter-spacing: 0.14em;
   margin: 0 0 var(--space-lg);
   line-height: 1.1;
+  /* Gradient text: gradient on background, then clip to text shape. Text color transparent so gradient shows. */
   background: linear-gradient(135deg, var(--color-text) 0%, var(--hero-name-mid) 60%, var(--color-accent) 100%);
-  -webkit-background-clip: text;
+  -webkit-background-clip: text; /* Safari needs -webkit- prefix. */
   -webkit-text-fill-color: transparent;
   background-clip: text;
 
@@ -435,9 +494,10 @@ main {
   font-size: 1.125rem;
   color: var(--color-text-muted);
   margin: 0;
+  /* ch = width of the "0" character. 36ch ≈ 36 characters; keeps line length readable. */
   max-width: 36ch;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: auto; /* Center a block when it has a max-width. */
 
   &::before {
     content: "";
@@ -458,7 +518,7 @@ main {
 .summary-text {
   font-size: 1.0625rem;
   line-height: 1.7;
-  max-width: 65ch;
+  max-width: 65ch; /* Optimal line length for body text (roughly 65-75 characters). */
   margin: 0;
   padding-left: var(--space-lg);
   border-left: 3px solid var(--color-accent);
@@ -485,6 +545,7 @@ main {
 
 .focus-list {
   display: grid;
+  /* auto-fill: as many columns as fit. minmax(280px, 1fr): each column min 280px, equal width. */
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--space-md) var(--space-xl);
   list-style: none;
@@ -499,7 +560,9 @@ main {
 
 /* ============================================
    Experience - accent bars and connecting line
-   ============================================ */
+   ============================================
+   Each card has ::before (colored bar) and ::after (vertical line to next card).
+   The line creates a timeline effect. nth-child varies bar colors. */
 
 .experience {
   .experience-card:first-of-type {
@@ -536,6 +599,7 @@ main {
     border-radius: 2px;
   }
 
+  /* nth-child(n) = element that is the nth child of its parent. Cycles through accent colors. */
   &:nth-child(2)::before { background: var(--color-accent-cyan); }
   &:nth-child(3)::before { background: var(--color-accent-violet); }
   &:nth-child(4)::before { background: var(--color-accent-amber); }
@@ -553,6 +617,7 @@ main {
     background: linear-gradient(180deg, rgba(var(--color-accent-rgb), 0.35) 0%, rgba(var(--color-accent-rgb), 0.1) 100%);
   }
 
+  /* No line after the last card, or after the collapsible (which has its own content). */
   &:last-of-type::after,
   &.experience-card--collapsible::after {
     display: none;
@@ -596,6 +661,7 @@ main {
     margin-bottom: var(--space-md);
     padding-left: var(--space-sm);
 
+    /* ::marker styles the list bullet (disc). We can't change the bullet itself, but we can color it. */
     &::marker {
       color: var(--color-accent);
       opacity: 0.5;
@@ -633,6 +699,8 @@ main {
     outline-offset: 2px;
   }
 
+  /* When collapsed, rotate the chevron and hide the content. ~ = general sibling selector
+     (any .experience-content that follows this button). JS toggles aria-expanded. */
   &[aria-expanded="false"] {
     .experience-toggle-icon {
       transform: rotate(-90deg);
@@ -645,7 +713,7 @@ main {
 }
 
 .experience-toggle-title {
-  flex: 1;
+  flex: 1; /* Takes remaining space; dates and icon stay at the ends. */
 }
 
 .experience-toggle-dates {
@@ -770,11 +838,12 @@ main {
     }
 
     &:focus {
-      outline: none;
+      outline: none; /* We use border-color for focus; outline would double up. */
       background: var(--input-bg-hover);
       border-color: var(--color-accent);
     }
 
+    /* focus-visible: keyboard focus shows outline; mouse click doesn't. Better UX. */
     &:focus-visible {
       outline: 2px solid var(--color-focus);
       outline-offset: 2px;
@@ -782,11 +851,12 @@ main {
   }
 
   textarea {
-    resize: vertical;
+    resize: vertical; /* User can resize height only; prevents horizontal overflow. */
     min-height: 120px;
   }
 }
 
+/* form-feedback shows success/error messages. .success and .error classes set by JS. */
 .form-feedback {
   margin-bottom: var(--space-lg);
   padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
@@ -829,6 +899,7 @@ main {
     outline-offset: 2px;
   }
 
+  /* :disabled matches when the button has the disabled attribute (set by JS during submit). */
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -853,11 +924,13 @@ main {
 
 /* ============================================
    Scroll-triggered fade-in
-   ============================================ */
+   ============================================
+   JS adds .fade-in to elements on load, then .visible when they enter the viewport
+   (IntersectionObserver). transition makes the change animate. */
 
 .fade-in {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(12px); /* Start 12px below final position. */
   transition: opacity 0.5s ease, transform 0.5s ease;
 
   &.visible {
@@ -868,13 +941,17 @@ main {
 
 /* ============================================
    Reduced Motion (Accessibility)
-   ============================================ */
+   ============================================
+   prefers-reduced-motion: reduce is set by users who are sensitive to motion or have
+   vestibular disorders. We disable smooth scroll and effectively remove animations. */
 
 @media (prefers-reduced-motion: reduce) {
   html {
-    scroll-behavior: auto;
+    scroll-behavior: auto; /* Instant jump instead of smooth scroll. */
   }
 
+  /* Near-instant transitions so layout still works but no motion. !important overrides
+     our transition values. */
   *,
   *::before,
   *::after {
