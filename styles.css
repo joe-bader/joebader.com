@@ -313,6 +313,57 @@ body {
   opacity: 1;
 }
 
+/* Nav actions container - holds theme toggle and hamburger on mobile */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+/* Mobile nav toggle button - hidden on desktop */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-accent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 600px) {
+    display: flex;
+  }
+}
+
+.nav-toggle-icon--close {
+  display: none;
+}
+
+.nav-toggle[aria-expanded="true"] {
+  .nav-toggle-icon--open {
+    display: none;
+  }
+
+  .nav-toggle-icon--close {
+    display: block;
+  }
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -330,8 +381,40 @@ body {
     gap: var(--space-lg);
   }
 
-  @media (max-width: 480px) {
-    gap: var(--space-md);
+  /* Mobile dropdown menu */
+  @media (max-width: 600px) {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--space-md) var(--space-lg);
+    background: rgba(var(--color-bg-rgb), 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base);
+
+    &.nav-links--open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    li {
+      width: 100%;
+      border-bottom: 1px solid var(--color-border);
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
   }
 
   a {
@@ -377,6 +460,16 @@ body {
 
     @media (max-width: 768px) {
       font-size: 0.875rem;
+    }
+
+    @media (max-width: 600px) {
+      width: 100%;
+      padding: var(--space-md) 0;
+      font-size: 1rem;
+
+      &.nav-link--active::after {
+        display: none;
+      }
     }
   }
 }

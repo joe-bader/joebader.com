@@ -81,6 +81,70 @@
   });
 
   // ============================================
+  // Mobile nav toggle
+  // ============================================
+  // Hamburger menu for mobile devices. Toggle shows/hides nav links. Clicking a nav
+  // link or clicking outside the menu closes it. Escape key also closes it.
+
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinksContainer = document.getElementById('nav-links');
+
+  function closeNavMenu() {
+    if (navToggle && navLinksContainer) {
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Open menu');
+      navLinksContainer.classList.remove('nav-links--open');
+    }
+  }
+
+  function openNavMenu() {
+    if (navToggle && navLinksContainer) {
+      navToggle.setAttribute('aria-expanded', 'true');
+      navToggle.setAttribute('aria-label', 'Close menu');
+      navLinksContainer.classList.add('nav-links--open');
+    }
+  }
+
+  function toggleNavMenu() {
+    const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+    if (isExpanded) {
+      closeNavMenu();
+    } else {
+      openNavMenu();
+    }
+  }
+
+  if (navToggle && navLinksContainer) {
+    navToggle.addEventListener('click', toggleNavMenu);
+
+    // Close menu when clicking a nav link
+    navLinksContainer.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', closeNavMenu);
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!navToggle.contains(e.target) && !navLinksContainer.contains(e.target)) {
+        closeNavMenu();
+      }
+    });
+
+    // Close menu on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeNavMenu();
+      }
+    });
+
+    // Close menu when resizing to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 600) {
+        closeNavMenu();
+      }
+    });
+  }
+
+  // ============================================
   // Header scroll state
   // ============================================
   // Adds a .scrolled class when the user has scrolled past 20px. CSS uses this to
