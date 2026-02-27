@@ -1054,3 +1054,245 @@ main {
   }
 }
 
+/* ============================================
+   Print Styles - Recruiter-friendly resume
+   ============================================ */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.55in;
+  }
+
+  :root {
+    --print-text: #111111;
+    --print-muted: #333333;
+    --print-rule: #c6c6c6;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: var(--print-text) !important;
+    font-size: 10.5pt;
+    line-height: 1.35;
+  }
+
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Hide interactive and non-resume UI for print output. */
+  .skip-link,
+  .site-header,
+  .theme-toggle,
+  .nav-toggle,
+  .nav-actions,
+  .contact,
+  .site-footer,
+  #contact {
+    display: none !important;
+  }
+
+  main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero {
+    text-align: left;
+    padding: 0;
+    margin: 0 0 0.15in;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .hero-name {
+    margin: 0 0 0.06in;
+    font-size: 26pt;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--print-text) !important;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  .hero-linkedin {
+    margin: 0;
+    color: var(--print-text) !important;
+    font-size: 10pt;
+    text-decoration: none;
+  }
+
+  .hero-linkedin .icon-linkedin {
+    display: none;
+  }
+
+  .hero-tagline {
+    max-width: none;
+    margin: 0.08in 0 0;
+    font-size: 11pt;
+    color: var(--print-muted) !important;
+  }
+
+  .hero-tagline::before {
+    display: none;
+  }
+
+  .section {
+    margin: 0 0 0.18in;
+  }
+
+  .section-heading {
+    margin: 0 0 0.08in;
+    padding-top: 0.04in;
+    border-top: 1px solid var(--print-rule);
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--print-text) !important;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .section-heading::before {
+    display: none;
+  }
+
+  .summary-text {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border-left: none;
+    font-size: 10.5pt;
+    color: var(--print-text) !important;
+  }
+
+  .summary-focus {
+    margin-top: 0.1in;
+  }
+
+  .subsection-heading {
+    margin: 0 0 0.04in;
+    font-size: 9pt;
+    letter-spacing: 0.05em;
+    color: var(--print-text) !important;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .focus-list {
+    display: block;
+    margin: 0;
+    padding-left: 0.18in;
+  }
+
+  .focus-list li {
+    margin: 0 0 0.035in;
+    font-size: 9.8pt;
+  }
+
+  .experience-card {
+    padding: 0.07in 0 0.1in;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .experience-card::before,
+  .experience-card::after {
+    display: none;
+  }
+
+  .experience-header {
+    margin-bottom: 0.03in;
+  }
+
+  .experience-title {
+    margin: 0;
+    font-size: 10.5pt;
+    line-height: 1.25;
+    color: var(--print-text) !important;
+  }
+
+  .experience-company,
+  .experience-dates {
+    margin: 0.02in 0 0;
+    font-size: 9.2pt;
+    color: var(--print-muted) !important;
+  }
+
+  .experience-bullets {
+    margin: 0.04in 0 0;
+    padding-left: 0.18in;
+  }
+
+  .experience-bullets li {
+    margin: 0 0 0.04in;
+    padding: 0;
+    orphans: 3;
+    widows: 3;
+  }
+
+  .experience-bullets li::marker {
+    color: var(--print-text) !important;
+  }
+
+  /* Always print Earlier Career content, regardless of UI toggle state. */
+  .experience-toggle {
+    display: none !important;
+  }
+
+  .experience-content {
+    display: block !important;
+    padding-top: 0;
+  }
+
+  .technical-grid {
+    gap: 0.06in;
+  }
+
+  .technical-category {
+    padding: 0.03in 0 0.03in 0.12in;
+    border-left: 1px solid var(--print-rule);
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .technical-label {
+    margin: 0 0 0.02in;
+    font-size: 8.8pt;
+    color: var(--print-text) !important;
+  }
+
+  .technical-values {
+    font-size: 9.2pt;
+    color: var(--print-text) !important;
+  }
+
+  .fade-in,
+  .fade-in.visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  a {
+    color: var(--print-text) !important;
+    text-decoration: none;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 8.8pt;
+    color: var(--print-muted);
+    word-break: break-all;
+  }
+}
+
