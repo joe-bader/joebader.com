@@ -18,6 +18,26 @@ npx serve
 
 Then visit `http://localhost:8000`.
 
+### Resume export tool (PDF + Word)
+
+Generate a polished resume in both PDF and Word formats directly from `index.html`:
+
+```bash
+npm install
+npm run setup:resume-tool
+npm run generate:resume
+```
+
+Outputs are written to `dist/resume/` as:
+
+- `<name>-resume.pdf`
+- `<name>-resume.docx`
+
+Notes:
+
+- `setup:resume-tool` installs Playwright's Chromium binary (one-time setup per machine).
+- Re-run `npm run generate:resume` whenever your site content changes.
+
 ### Formspree (contact form)
 
 The contact form uses [Formspree](https://formspree.io). The form ID `xdadbbnr` is already configured in `index.html`.

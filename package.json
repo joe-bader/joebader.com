@@ -1,0 +1,15 @@
+{
+  "name": "joebader-resume-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Resume site with export tooling",
+  "type": "module",
+  "scripts": {
+    "generate:resume": "node scripts/generate-resume.js",
+    "setup:resume-tool": "playwright install chromium"
+  },
+  "dependencies": {
+    "docx": "^9.5.1",
+    "playwright": "^1.54.2"
+  }
+}

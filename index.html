@@ -55,6 +55,20 @@ joebader.com - Resume Site
         <li><a href="#experience">Experience</a></li>
         <li><a href="#technical">Technical</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li class="nav-resume nav-resume--cta">
+          <button type="button" class="nav-resume-toggle" aria-expanded="false" aria-controls="nav-resume-menu">
+            <span>Resume</span>
+            <svg class="nav-resume-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3v12"></path>
+              <path d="m7 10 5 5 5-5"></path>
+              <path d="M5 21h14"></path>
+            </svg>
+          </button>
+          <ul class="nav-resume-menu" id="nav-resume-menu" aria-label="Resume download links">
+            <li><a href="resume/resume.pdf" download>PDF</a></li>
+            <li><a href="resume/resume.docx" download>Word</a></li>
+          </ul>
+        </li>
       </ul>
       <div class="nav-actions">
         <button type="button" class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode. Double-click to use system preference.">
@@ -89,6 +103,10 @@ joebader.com - Resume Site
         </svg>
         LinkedIn
       </a>
+      <div class="resume-downloads" aria-label="Resume downloads">
+        <a class="resume-download-link" href="resume/resume.pdf" download>Download PDF Resume</a>
+        <a class="resume-download-link" href="resume/resume.docx" download>Download Word Resume</a>
+      </div>
       <p class="hero-tagline">Senior Engineering Leader<br>Platform, Enablement & Architecture</p>
     </section>
 
