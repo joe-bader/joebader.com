@@ -204,7 +204,7 @@
   // at top of page), we default to the first section.
   // aria-current tells screen readers which nav item is current; improves accessibility.
 
-  const navSections = ['summary', 'experience', 'technical', 'contact'];
+  const navSections = ['summary', 'technical', 'experience', 'contact'];
   // querySelectorAll returns all matching elements. a[href^="#"] = anchors whose href starts with "#".
   const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 
