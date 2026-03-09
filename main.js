@@ -212,19 +212,26 @@
     const headerOffset = 100; // Pixels from top of viewport. Accounts for sticky header.
     let activeId = null;
 
-    navSections.forEach((id) => {
-      const section = document.getElementById(id);
-      if (!section) return;
-      // getBoundingClientRect() returns position/size relative to the viewport.
-      // rect.top = distance from top of viewport. Negative means scrolled past.
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= headerOffset) {
-        activeId = id;
-      }
-    });
+    // If scrolled to (or near) the bottom of the page, the last section wins
+    // regardless of its top position — it may never cross the threshold otherwise.
+    const nearBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 10;
+    if (nearBottom) {
+      activeId = navSections[navSections.length - 1];
+    } else {
+      navSections.forEach((id) => {
+        const section = document.getElementById(id);
+        if (!section) return;
+        // getBoundingClientRect() returns position/size relative to the viewport.
+        // rect.top = distance from top of viewport. Negative means scrolled past.
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= headerOffset) {
+          activeId = id;
+        }
+      });
 
-    if (!activeId && navSections.length) {
-      activeId = navSections[0];
+      if (!activeId && navSections.length) {
+        activeId = navSections[0];
+      }
     }
 
     navLinks.forEach((link) => {
