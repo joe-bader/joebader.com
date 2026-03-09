@@ -115,6 +115,87 @@ function getSkills() {
   ];
 }
 
+// 5 skills per experience entry, matched by partial title/company string.
+// Optimized for LinkedIn recruiter searches for each role type.
+const EXPERIENCE_SKILLS = [
+  {
+    match: "Riskonnect",
+    skills: [
+      "Engineering Management",
+      "Agile Methodologies",
+      "Software Architecture",
+      "Artificial Intelligence",
+      "Team Leadership"
+    ]
+  },
+  {
+    match: "TEKsystems",
+    skills: [
+      "React.js",
+      "JavaScript",
+      "AngularJS",
+      "Software Architecture",
+      "Agile Methodologies"
+    ]
+  },
+  {
+    match: "5 Foot Gorilla",
+    skills: [
+      "Software Architecture",
+      "Engineering Management",
+      "Full-Stack Development",
+      "Agile Methodologies",
+      "Node.js"
+    ]
+  },
+  {
+    match: "FIS Global",
+    skills: [
+      "React.js",
+      "AngularJS",
+      "Software Architecture",
+      "Engineering Management",
+      "Agile Methodologies"
+    ]
+  },
+  {
+    match: "Cnverg",
+    skills: [
+      "Product Management",
+      "Engineering Management",
+      "Agile Methodologies",
+      "Software Architecture",
+      "Team Leadership"
+    ]
+  },
+  {
+    match: "EY Design Studio",
+    skills: [
+      "Software Architecture",
+      "AngularJS",
+      "JavaScript",
+      "Front-End Development",
+      "Agile Methodologies"
+    ]
+  },
+  {
+    match: "Earlier Career",
+    skills: [
+      "JavaScript",
+      "Front-End Development",
+      "HTML",
+      "CSS",
+      "Web Development"
+    ]
+  }
+];
+
+function getExperienceSkills(exp) {
+  const haystack = `${exp.title} ${exp.company}`;
+  const entry = EXPERIENCE_SKILLS.find((e) => haystack.includes(e.match));
+  return entry ? entry.skills : [];
+}
+
 async function main() {
   const data = await extractData();
 
@@ -152,6 +233,12 @@ async function main() {
     console.log(`${bar("·")}`);
     console.log(description);
     console.log(bar("·"));
+
+    const expSkills = getExperienceSkills(exp);
+    if (expSkills.length > 0) {
+      console.log(`\n  Skills (max 5)`);
+      expSkills.forEach((skill, i) => console.log(`    ${i + 1}. ${skill}`));
+    }
   }
 
   // ── Skills ────────────────────────────────────────────────────────────────
