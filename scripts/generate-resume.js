@@ -83,7 +83,7 @@ function renderResumeHtml(data) {
 
       @page {
         size: Letter;
-        margin: 0.75in;
+        margin: 0.5in;
       }
 
       * {
@@ -95,7 +95,7 @@ function renderResumeHtml(data) {
         color: var(--text);
         font-family: "Calibri", "Segoe UI", Arial, sans-serif;
         font-size: 11pt;
-        line-height: 1.15;
+        line-height: 1.1;
       }
 
       h1, h2, h3, p, ul {
@@ -109,22 +109,22 @@ function renderResumeHtml(data) {
       .name {
         font-size: 22pt;
         line-height: 1.05;
-        margin-bottom: 0.05in;
+        margin-bottom: 0.04in;
       }
 
       .tagline {
-        margin-bottom: 0.04in;
+        margin-bottom: 0.03in;
       }
 
       .links {
         color: var(--accent);
-        padding-bottom: 0.06in;
-        margin-bottom: 0.12in;
+        padding-bottom: 0.04in;
+        margin-bottom: 0.09in;
         border-bottom: 2px solid var(--line);
       }
 
       .section {
-        margin-bottom: 0.12in;
+        margin-bottom: 0.08in;
       }
 
       .section-title {
@@ -132,29 +132,24 @@ function renderResumeHtml(data) {
         text-transform: uppercase;
         letter-spacing: 0.08em;
         color: var(--accent);
-        margin-bottom: 0.06in;
+        margin-bottom: 0.04in;
       }
 
       .summary {
-        margin-bottom: 0.1in;
+        margin-bottom: 0.08in;
       }
 
       .bullet-list {
-        margin-top: 0.02in;
+        margin-top: 0.01in;
         padding-left: 0.25in;
       }
 
       .bullet-list li {
-        margin: 0.02in 0;
-      }
-
-      .focus-columns {
-        columns: 2;
-        column-gap: 0.45in;
+        margin: 0.01in 0;
       }
 
       .experience-item {
-        margin-bottom: 0.09in;
+        margin-bottom: 0.06in;
         break-inside: avoid;
       }
 
@@ -183,7 +178,7 @@ function renderResumeHtml(data) {
       }
 
       .technical-row {
-        margin-bottom: 0.02in;
+        margin-bottom: 0.015in;
       }
     </style>
   </head>
@@ -326,10 +321,10 @@ async function writePdf(html, outputPath) {
       format: "Letter",
       printBackground: true,
       margin: {
-        top: "0.75in",
-        right: "0.75in",
-        bottom: "0.75in",
-        left: "0.75in"
+        top: "0.5in",
+        right: "0.5in",
+        bottom: "0.5in",
+        left: "0.5in"
       }
     });
   } finally {
