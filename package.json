@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "generate:resume": "node scripts/generate-resume.js",
+    "linkedin": "node scripts/linkedin-copy.js",
     "setup:resume-tool": "playwright install chromium"
   },
   "dependencies": {
