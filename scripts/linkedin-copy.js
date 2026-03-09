@@ -103,13 +103,16 @@ function formatDescription(bullets) {
   return bullets.map((b) => `• ${b}`).join("\n");
 }
 
-function extractSkills(technical) {
-  const skills = [];
-  for (const row of technical) {
-    if (row.label === "Practices") continue;
-    skills.push(...row.values.split(",").map((s) => s.trim()));
-  }
-  return skills;
+function getSkills() {
+  // Curated for LinkedIn recruiter searches targeting senior engineering manager,
+  // director, and lead engineer roles. Max 5 on LinkedIn free tier.
+  return [
+    "Engineering Management",
+    "Software Architecture",
+    "React.js",
+    "Agile Methodologies",
+    "Artificial Intelligence"
+  ];
 }
 
 async function main() {
@@ -152,11 +155,11 @@ async function main() {
   }
 
   // ── Skills ────────────────────────────────────────────────────────────────
-  section("SKILLS  (LinkedIn allows up to 50)");
+  section("SKILLS  (LinkedIn free tier — max 5)");
 
-  const skills = extractSkills(data.technical);
+  const skills = getSkills();
   console.log();
-  skills.forEach((skill, i) => console.log(`  ${String(i + 1).padStart(2, " ")}. ${skill}`));
+  skills.forEach((skill, i) => console.log(`  ${i + 1}. ${skill}`));
 
   console.log(`\n${bar("═")}\n`);
 }
