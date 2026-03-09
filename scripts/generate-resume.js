@@ -10,12 +10,8 @@ import {
   LevelFormat,
   Packer,
   Paragraph,
-  Table,
-  TableCell,
-  TableRow,
   TabStopType,
-  TextRun,
-  WidthType
+  TextRun
 } from "docx";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -196,7 +192,7 @@ function renderResumeHtml(data) {
       <header>
         <h1 class="name">${escapeHtml(data.name)}</h1>
         <p class="tagline">${escapeHtml(data.tagline)}</p>
-        <p class="links">${escapeHtml(data.website)} | ${escapeHtml(data.linkedin)}</p>
+        <p class="links">${escapeHtml(data.location)} | ${escapeHtml(data.email)} | ${escapeHtml(data.website)} | ${escapeHtml(data.linkedin)}</p>
       </header>
 
       <section class="section">
@@ -205,18 +201,13 @@ function renderResumeHtml(data) {
       </section>
 
       <section class="section">
-        <h2 class="section-title">Focus Areas</h2>
-        <ul class="bullet-list focus-columns">${focusItems}</ul>
+        <h2 class="section-title">Technical</h2>
+        ${technical}
       </section>
 
       <section class="section">
         <h2 class="section-title">Experience</h2>
         ${experiences}
-      </section>
-
-      <section class="section">
-        <h2 class="section-title">Technical</h2>
-        ${technical}
       </section>
     </main>
   </body>
@@ -276,9 +267,17 @@ async function extractDataFromSite() {
 
       const linkedinHref = document.querySelector(".hero-linkedin")?.getAttribute("href") || "";
 
+      const taglineEl = document.querySelector(".hero-tagline");
+      let tagline = "";
+      if (taglineEl) {
+        const clone = taglineEl.cloneNode(true);
+        clone.querySelectorAll("br").forEach((br) => br.replaceWith(" | "));
+        tagline = clone.textContent.trim().replace(/\s*\|\s*/g, " | ");
+      }
+
       return {
         name: pickText(".hero-name"),
-        tagline: pickText(".hero-tagline").replace(/\s*\n\s*/g, " | "),
+        tagline,
         summary: pickText(".summary-text"),
         focusItems: pickList(".focus-list li"),
         experiences,
@@ -299,6 +298,8 @@ async function extractDataFromSite() {
     return {
       name: data.name || "Resume",
       tagline: data.tagline || "",
+      location: "Philadelphia, PA 19129",
+      email: "joe@joebader.com",
       website: "joebader.com",
       linkedin: data.linkedinHref ? data.linkedinHref.replace(/^https?:\/\//, "") : "",
       summary: data.summary || "",
@@ -352,7 +353,7 @@ function buildDocxParagraphs(data) {
     new Paragraph({
       children: [
         new TextRun({
-          text: `${data.website} | ${data.linkedin}`,
+          text: `${data.location} | ${data.email} | ${data.website} | ${data.linkedin}`,
           color: "12456E"
         })
       ],
@@ -381,62 +382,23 @@ function buildDocxParagraphs(data) {
 
   children.push(
     new Paragraph({
-      text: "FOCUS AREAS",
+      text: "TECHNICAL",
       heading: HeadingLevel.HEADING_2,
       spacing: { before: 60, after: 80 }
     })
   );
 
-  const focusRows = [];
-  for (let index = 0; index < data.focusItems.length; index += 2) {
-    const left = data.focusItems[index];
-    const right = data.focusItems[index + 1] || "";
-
-    focusRows.push(
-      new TableRow({
+  for (const row of data.technical) {
+    children.push(
+      new Paragraph({
         children: [
-          new TableCell({
-            borders: {
-              top: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" },
-              right: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" },
-              bottom: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" },
-              left: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" }
-            },
-            children: [
-              new Paragraph({
-                text: left ? `• ${left}` : "",
-                spacing: { after: 40 }
-              })
-            ]
-          }),
-          new TableCell({
-            borders: {
-              top: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" },
-              right: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" },
-              bottom: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" },
-              left: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" }
-            },
-            children: [
-              new Paragraph({
-                text: right ? `• ${right}` : "",
-                spacing: { after: 40 }
-              })
-            ]
-          })
-        ]
+          new TextRun({ text: `${row.label}: `, bold: true }),
+          new TextRun({ text: row.values })
+        ],
+        spacing: { after: 35 }
       })
     );
   }
-
-  children.push(
-    new Table({
-      width: {
-        size: 100,
-        type: WidthType.PERCENTAGE
-      },
-      rows: focusRows
-    })
-  );
 
   children.push(
     new Paragraph({
@@ -483,26 +445,6 @@ function buildDocxParagraphs(data) {
     if (index < data.experiences.length - 1) {
       children.push(new Paragraph({ text: "", spacing: { after: 25 } }));
     }
-  }
-
-  children.push(
-    new Paragraph({
-      text: "TECHNICAL",
-      heading: HeadingLevel.HEADING_2,
-      spacing: { before: 60, after: 80 }
-    })
-  );
-
-  for (const row of data.technical) {
-    children.push(
-      new Paragraph({
-        children: [
-          new TextRun({ text: `${row.label}: `, bold: true }),
-          new TextRun({ text: row.values })
-        ],
-        spacing: { after: 35 }
-      })
-    );
   }
 
   return children;
