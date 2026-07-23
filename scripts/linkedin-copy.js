@@ -119,6 +119,16 @@ function getSkills() {
 // Optimized for LinkedIn recruiter searches for each role type.
 const EXPERIENCE_SKILLS = [
   {
+    match: "Tuner Logic",
+    skills: [
+      "Conversational AI",
+      "Large Language Models (LLM)",
+      "Software Architecture",
+      "TypeScript",
+      "React.js"
+    ]
+  },
+  {
     match: "Riskonnect",
     skills: [
       "Engineering Management",
