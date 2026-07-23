@@ -294,7 +294,7 @@ async function extractDataFromSite() {
       name: data.name || "Resume",
       tagline: data.tagline || "",
       location: "Philadelphia, PA 19129",
-      email: "joe@joebader.com",
+      email: "joseph.bader@gmail.com",
       website: "joebader.com",
       linkedin: data.linkedinHref ? data.linkedinHref.replace(/^https?:\/\//, "") : "",
       summary: data.summary || "",
