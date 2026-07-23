@@ -109,7 +109,7 @@ function getSkills() {
   return [
     "Engineering Management",
     "Software Architecture",
-    "React.js",
+    "Conversational AI",
     "Agile Methodologies",
     "Artificial Intelligence"
   ];
