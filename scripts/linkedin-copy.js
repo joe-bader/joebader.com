@@ -105,13 +105,14 @@ function formatDescription(bullets) {
 
 function getSkills() {
   // Curated for LinkedIn recruiter searches targeting senior engineering manager,
-  // director, and lead engineer roles. Max 5 on LinkedIn free tier.
+  // director, and lead engineer roles. Max 5 on LinkedIn free tier. Kept broad to
+  // match the general-purpose resume — role-specific terms live in EXPERIENCE_SKILLS.
   return [
     "Engineering Management",
     "Software Architecture",
-    "Conversational AI",
-    "Agile Methodologies",
-    "Artificial Intelligence"
+    "Full-Stack Development",
+    "Artificial Intelligence",
+    "Agile Methodologies"
   ];
 }
 
@@ -121,9 +122,9 @@ const EXPERIENCE_SKILLS = [
   {
     match: "Tuner Logic",
     skills: [
-      "Conversational AI",
       "Large Language Models (LLM)",
       "Software Architecture",
+      "Full-Stack Development",
       "TypeScript",
       "React.js"
     ]
