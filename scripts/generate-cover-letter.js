@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, "..");
 const outputDir = path.join(projectRoot, "dist", "cover-letter");
+const repoOutputDir = path.join(projectRoot, "cover-letter");
 
 const letter = {
   name: "Joe Bader",
@@ -165,8 +166,14 @@ async function main() {
 
   await writePdf(html, pdfPath);
 
+  // dist/ is git-ignored, so keep a tracked copy the same way the resume does.
+  const repoPdfPath = path.join(repoOutputDir, path.basename(pdfPath));
+  await fs.mkdir(repoOutputDir, { recursive: true });
+  await fs.copyFile(pdfPath, repoPdfPath);
+
   console.log("Cover letter export complete.");
   console.log(`PDF: ${pdfPath}`);
+  console.log(`REPO PDF: ${repoPdfPath}`);
 }
 
 main().catch((error) => {
