@@ -107,13 +107,13 @@ joebader.com - Resume Site
         <a class="resume-download-link" href="resume/resume.pdf" download>Download PDF Resume</a>
         <a class="resume-download-link" href="resume/resume.docx" download>Download Word Resume</a>
       </div>
-      <p class="hero-tagline">Software Engineering Leadership, Platform Architecture, Full-Stack &amp; AI Development</p>
+      <p class="hero-tagline">Principal Engineer building production AI agents, their evaluations, and the controls that keep them safe</p>
     </section>
 
     <section class="summary section" id="summary" aria-labelledby="summary-heading">
       <h2 id="summary-heading" class="section-heading">Summary</h2>
       <p class="summary-text">
-        Software engineering leader with 20+ years building and modernizing customer-facing web platforms across enterprise, SaaS, consulting, and startup environments. Led and mentored five cross-functional teams on a core B2B SaaS product, spent four years on high-traffic Comcast platforms serving millions of customers, and founded an AI SaaS as sole architect. Hands-on across the full stack — TypeScript and React front ends, cloud-native services, and the CI/CD and testing systems around them — with a record of improving delivery predictability and scaling AI-assisted development.
+        Hands-on principal engineer and engineering leader with 20+ years building and running production systems, now focused on AI agents that finish real work safely. As founder of Tuner Logic, built a safety-sensitive AI assistant and the multi-agent platform that develops it, where agents author 100% of commits under sandboxing, scoped permissions, and human review. Previously led five engineering teams at Riskonnect and spent four years on Comcast platforms serving millions of customers. Earlier, technical lead at Intuitive Company, now EY Design Studio.
       </p>
     </section>
 
@@ -121,28 +121,28 @@ joebader.com - Resume Site
       <h2 id="technical-heading" class="section-heading">Technical Background</h2>
       <dl class="technical-grid">
         <div class="technical-category">
+          <dt class="technical-label">Agent Engineering</dt>
+          <dd class="technical-values">Model APIs (Cloudflare Workers AI, Anthropic, OpenAI), tool calling, structured outputs (Zod), context engineering, model routing, multi-agent orchestration, Agent Client Protocol (ACP), Claude Code, Codex</dd>
+        </div>
+        <div class="technical-category">
+          <dt class="technical-label">Evaluation & Controls</dt>
+          <dd class="technical-values">Task-based evals, tool-call trajectory scoring, regression guards, sandboxed execution, scoped bot identities, human approval gates, audit logging</dd>
+        </div>
+        <div class="technical-category">
           <dt class="technical-label">Languages</dt>
-          <dd class="technical-values">TypeScript, JavaScript, SQL, Ruby, .NET, PHP, HTML, CSS</dd>
+          <dd class="technical-values">TypeScript, JavaScript, Python, SQL, Bash, Ruby, .NET, PHP</dd>
         </div>
         <div class="technical-category">
           <dt class="technical-label">Frameworks</dt>
-          <dd class="technical-values">React, AngularJS, Node.js, Ruby on Rails, Bootstrap</dd>
+          <dd class="technical-values">React, Node.js, Hono, Drizzle, Ruby on Rails</dd>
         </div>
         <div class="technical-category">
           <dt class="technical-label">Cloud & Infrastructure</dt>
-          <dd class="technical-values">AWS, Azure, Cloudflare, Heroku, DigitalOcean, Linux</dd>
+          <dd class="technical-values">Cloudflare (Workers, D1, R2), AWS, Azure, Heroku, Linux, Docker, Podman, Kubernetes, Terraform, Ansible, systemd, New Relic</dd>
         </div>
         <div class="technical-category">
           <dt class="technical-label">CI/CD & Testing</dt>
-          <dd class="technical-values">GitHub Actions, Jenkins, CircleCI, Azure DevOps, Playwright</dd>
-        </div>
-        <div class="technical-category">
-          <dt class="technical-label">AI Engineering</dt>
-          <dd class="technical-values">LLM integration (tool calling, model evaluation), agentic development</dd>
-        </div>
-        <div class="technical-category">
-          <dt class="technical-label">Practices</dt>
-          <dd class="technical-values">Team leadership and mentoring, agile delivery, architecture stewardship, platform modernization, DevOps, DORA metrics</dd>
+          <dd class="technical-values">GitHub Actions, Gitea Actions, Jenkins, CircleCI, Azure DevOps, Playwright, Vitest</dd>
         </div>
       </dl>
     </section>
@@ -157,12 +157,16 @@ joebader.com - Resume Site
           <p class="experience-dates">07/2025 - Present</p>
         </div>
         <ul class="experience-bullets">
-          <li>Founded and launched Tuner Logic, an AI-assisted SaaS platform for automotive performance tuning; sole architect from concept through public launch, shipping ~1,000 commits across 350+ pull requests in the first year.</li>
-          <li>Architected the full stack — React 18/TypeScript front end, Cloudflare Workers backend (Hono, Drizzle, D1, R2) — including a binary calibration editor with 2D/3D table views and revision diffs, plus a multi-channel telemetry analysis engine.</li>
-          <li>Built an LLM assistant with function calling grounded in live application data, including server-side provider proxying (Anthropic, OpenAI), usage-metered credit billing via Stripe, and nightly automated model evaluations.</li>
-          <li>Applied ISO 26262-inspired safety practices: per-component ASIL classifications driving ratcheting test-coverage gates toward 100% across unit, integration, and E2E suites.</li>
-          <li>Built continuous delivery on GitHub Actions and Cloudflare with per-PR preview environments, sharded Playwright E2E, and recurring security audits.</li>
-          <li>Engineered a multi-agent AI development platform — coding agents orchestrated across isolated git worktrees on self-hosted runners, with an AI code reviewer as a required merge gate — sustaining multi-team throughput solo.</li>
+          <li>Founded Tuner Logic, an AI-assisted SaaS for automotive performance tuning, where a wrong answer can damage an engine. Sole architect of the product and its delivery platform, from concept through production deployment (3,300+ agent-authored commits under my direction and review).</li>
+          <li>Built the product's AI assistant as a server-side agent loop in TypeScript on Cloudflare Workers. The model answers tuning questions by calling 13 typed tools over the user's own calibration, log, and dyno data, with schema-validated output and a hard cap on tool rounds that forces a final answer.</li>
+          <li>Kept the model away from decisions where it could do harm. Corrections and safety checks run in deterministic code that the model calls as tools, model-written values for fuel, ignition, and boost tables are withheld, and no edit is applied until the user reviews and accepts it. Unsafe requests are refused by rule, in ten languages.</li>
+          <li>Made model selection evidence-based with a nightly evaluation that runs every candidate model through realistic tasks and scores the full sequence of tool calls with fixed checks instead of an LLM judge. Results change production routing only through a pull request that a person reviews.</li>
+          <li>Built a model router that balances capability, speed, and cost for each task and uses production telemetry to sideline a model that starts returning malformed tool calls, empty responses, or errors, restoring it once it recovers.</li>
+          <li>Built the multi-agent platform that develops the product: labeling an issue starts a supervised coding agent in its own isolated workspace, using any of six agent CLIs. Agents author 100% of commits, and any session can be watched or taken over from a dashboard or phone.</li>
+          <li>Made long-running agent work recoverable: prompts are queued durably, dispatch is idempotent, and stuck sessions are reclaimed automatically. Several of these safeguards came from diagnosing live failures (leaked worker slots, an exhausted port pool, stalled reviews) and shipping fixes with regression tests.</li>
+          <li>Limited what each agent can do. Coding and review agents have separate scoped identities, so the agent that writes code cannot approve it and the reviewer cannot push. Review agents run in per-session sandboxes without a source checkout and treat pull request content as untrusted input.</li>
+          <li>Automated the path to production without giving up control. A merge queue lands only pull requests approved at their exact commit (250+ batches in its first two weeks), retries infrastructure failures, and isolates the offending change when a batch fails. A Python release broker keeps production credentials out of CI.</li>
+          <li>Held the product to safety-engineering standards: a 100% backend test-coverage floor, ISO 26262-inspired coverage targets for domain code, production health checks every five minutes, and rehearsed restore drills.</li>
         </ul>
       </article>
 
@@ -173,12 +177,11 @@ joebader.com - Resume Site
           <p class="experience-dates">12/2021 - 12/2025</p>
         </div>
         <ul class="experience-bullets">
-          <li>Led and mentored five cross-functional engineering teams (5–8 engineers each) supporting a core B2B SaaS platform, improving on-time delivery from 30% to 95% while meeting reliability targets.</li>
-          <li>Led a major UI modernization effort using agentic AI to migrate a legacy Bootstrap interface to the latest version, including inventorying, planning, and updating thousands of UI files.</li>
-          <li>Served as senior architecture reviewer for high-impact initiatives, helping teams identify weak design approaches before implementation and reducing long-term platform risk.</li>
+          <li>Led a major UI modernization using agentic AI to migrate a legacy Bootstrap interface, including inventorying, planning, and updating thousands of UI files.</li>
           <li>Scaled AI-assisted development practices across five teams, increasing pull request throughput by 40%.</li>
-          <li>Partnered with product and engineering leadership to sequence multi-quarter initiatives and manage stakeholder communications, improving roadmap predictability.</li>
-          <li>Implemented engineering metrics and review cadences that improved lead time for changes by 4x and increased visibility for planning and execution.</li>
+          <li>Led and mentored five cross-functional engineering teams (5–8 engineers each) on a core B2B SaaS platform, improving on-time delivery from 30% to 95% while meeting reliability targets.</li>
+          <li>Reviewed architecture for high-impact initiatives, catching weak designs before implementation and reducing long-term platform risk.</li>
+          <li>Implemented engineering metrics and review cadences that improved lead time for changes by 4x.</li>
         </ul>
       </article>
 
@@ -189,22 +192,21 @@ joebader.com - Resume Site
           <p class="experience-dates">10/2018 - 07/2021</p>
         </div>
         <ul class="experience-bullets">
-          <li>Served as a lead engineer on four high-visibility initiatives across Comcast's digital sales and account management platforms.</li>
-          <li>Served as a senior developer on Buy Online, Pick Up In-Store implementation across five applications and services, improving customer workflows and reducing reliance on slower fulfillment paths.</li>
+          <li>Delivered four high-visibility initiatives as a lead engineer across Comcast's digital sales and account management platforms, including the Allspark transformation team and Buy Online, Pick Up In-Store across five applications and services.</li>
+          <li>Implemented a scalable Consent UI handling millions of legal acceptance records.</li>
           <li>Contributed to the re-architecture of high-traffic customer-facing systems serving millions of users, reducing critical page latency and production defect rates.</li>
-          <li>Owned billing, consent, and call-center integration workflows tied to revenue and compliance, hardening audited workflows against compliance defects.</li>
+          <li>Owned billing, consent, and call-center workflows tied to revenue and compliance, hardening audited workflows against compliance defects.</li>
         </ul>
       </article>
 
       <article class="experience-card">
         <div class="experience-header">
-          <h3 class="experience-title">Founder, Managing Partner, and Technology Principal</h3>
+          <h3 class="experience-title">Managing Partner &amp; CTO</h3>
           <p class="experience-company">5 Foot Gorilla, LLC | Philadelphia, PA / Remote</p>
           <p class="experience-dates">10/2017 - 10/2018</p>
         </div>
         <ul class="experience-bullets">
-          <li>Built and led a technology consulting firm delivering custom SaaS, web, and mobile solutions from discovery through production launch.</li>
-          <li>Owned solution architecture, technical execution, sales scoping, and delivery governance across client engagements, advising clients on modernization and scalable architecture strategy.</li>
+          <li>Co-founded and led a technology consulting firm delivering custom SaaS, web, and mobile solutions from discovery through production launch, owning architecture, execution, and delivery governance.</li>
         </ul>
       </article>
 
@@ -215,10 +217,8 @@ joebader.com - Resume Site
           <p class="experience-dates">02/2016 - 09/2017</p>
         </div>
         <ul class="experience-bullets">
-          <li>Served as a lead engineer on the redesign and re-architecture of Xfinity My Account, a customer-facing platform serving approximately 11 million monthly users, leading tiger teams within the program; the redesign received the Creativity International Gold Award for Web Redesign.</li>
-          <li>Owned billing and payment journeys, among the highest-traffic self-service flows in the application.</li>
-          <li>Partnered with product, design, and service architecture leaders to deliver 26 major releases in 19 months while controlling scope churn through disciplined backlog and release management.</li>
-          <li>Helped deliver the program ahead of schedule and under budget, streamlining billing journeys and improving bill-payment completion.</li>
+          <li>Helped re-architect Xfinity My Account (about 11 million monthly users) as a lead engineer heading tiger teams. The redesign won the Creativity International Gold Award for Web Redesign.</li>
+          <li>Owned billing and payment journeys, among the highest-traffic self-service flows in the application, and partnered across product, design, and service architecture to deliver 26 major releases in 19 months.</li>
         </ul>
       </article>
 
@@ -229,37 +229,65 @@ joebader.com - Resume Site
           <p class="experience-dates">05/2015 - 02/2016</p>
         </div>
         <ul class="experience-bullets">
-          <li>Took a prototype-stage product to market in under six months by stabilizing the codebase and formalizing delivery practices.</li>
-          <li>Led a mixed team of engineers, contractors, and interns, driving performance tuning and platform hardening that supported 560% user growth.</li>
+          <li>Took a prototype-stage product to market in under six months, leading performance tuning and platform hardening that supported 560% user growth and helped secure follow-on venture funding.</li>
         </ul>
       </article>
 
       <article class="experience-card">
         <div class="experience-header">
           <h3 class="experience-title">User Interface Architect / Tech Lead</h3>
-          <p class="experience-company">EY Design Studio (formerly Intuitive Company) | Philadelphia, PA</p>
+          <p class="experience-company">Intuitive Company (now EY Design Studio) | Philadelphia, PA</p>
           <p class="experience-dates">11/2013 - 05/2015</p>
         </div>
         <ul class="experience-bullets">
-          <li>Served as technical lead on multidisciplinary teams delivering custom enterprise solutions across three concurrent client engagements.</li>
-          <li>Led UI architecture and technical planning in partnership with principals and engagement leads, improving delivery predictability and reducing rework.</li>
+          <li>Led the technical work on multidisciplinary teams delivering custom enterprise solutions across three concurrent client engagements, planning architecture with principals and engagement leads.</li>
+          <li>Delivered reusable UI frameworks that made delivery more consistent, and built client relationships that led to follow-on work.</li>
         </ul>
       </article>
 
-      <article class="experience-card experience-card--collapsible" id="earlier-career">
-        <button class="experience-toggle" aria-expanded="true" aria-controls="earlier-career-content" id="earlier-career-toggle">
-          <span class="experience-toggle-title">Earlier Career</span>
-          <span class="experience-toggle-dates">2003 – 2013</span>
-          <svg class="experience-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </button>
-        <div class="experience-content" id="earlier-career-content">
-          <ul class="experience-bullets">
-            <li>Delivered 25+ web and systems engineering projects as an independent contractor, with 90% repeat-client business and 95% on-time delivery.</li>
-            <li>As a UI Developer at cPanel, contributed to a major interface overhaul used by millions of end users, improving task completion and time-to-complete by 80%.</li>
-          </ul>
+      <article class="experience-card">
+        <div class="experience-header">
+          <h3 class="experience-title">Owner &amp; Principal Engineer</h3>
+          <p class="experience-company">Gigabuilder LLC | Philadelphia, PA</p>
+          <p class="experience-dates">12/2010 - 11/2013</p>
         </div>
+        <ul class="experience-bullets">
+          <li>Ran an independent software practice delivering custom SaaS platforms, completing 25+ projects across healthcare, e-commerce, and media with 90% repeat-client business and 95% on-time delivery, bringing on contractors for larger engagements.</li>
+          <li>Designed cloud architectures on AWS and Heroku and scaled hosting infrastructure for high-traffic applications.</li>
+        </ul>
+      </article>
+
+      <article class="experience-card">
+        <div class="experience-header">
+          <h3 class="experience-title">Senior Front-End Developer</h3>
+          <p class="experience-company">Band Digital (formerly Whittman-Hart) | Philadelphia, PA</p>
+          <p class="experience-dates">05/2010 - 11/2010</p>
+        </div>
+        <ul class="experience-bullets">
+          <li>Built interfaces and maintained hosting for high-profile clients across concurrent projects.</li>
+        </ul>
+      </article>
+
+      <article class="experience-card">
+        <div class="experience-header">
+          <h3 class="experience-title">VP of Technology</h3>
+          <p class="experience-company">Exam Master Corporation | Philadelphia, PA</p>
+          <p class="experience-dates">01/2003 - 01/2005, 01/2006 - 09/2009</p>
+        </div>
+        <ul class="experience-bullets">
+          <li>Rewrote Exam Master Online, a high-availability exam delivery platform, and managed IT infrastructure.</li>
+        </ul>
+      </article>
+
+      <article class="experience-card">
+        <div class="experience-header">
+          <h3 class="experience-title">User Interface Developer</h3>
+          <p class="experience-company">cPanel Corporation | Houston, TX</p>
+          <p class="experience-dates">01/2005 - 01/2006</p>
+        </div>
+        <ul class="experience-bullets">
+          <li>Redeveloped the cPanel/WHM interface for 12M+ users, improving task completion and time-to-complete by 80%.</li>
+        </ul>
       </article>
     </section>
 

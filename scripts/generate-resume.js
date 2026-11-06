@@ -146,11 +146,15 @@ function renderResumeHtml(data) {
 
       .bullet-list li {
         margin: 0.01in 0;
+        break-inside: avoid;
       }
 
       .experience-item {
         margin-bottom: 0.06in;
-        break-inside: avoid;
+      }
+
+      .section-title {
+        break-after: avoid;
       }
 
       .experience-header {
@@ -158,6 +162,7 @@ function renderResumeHtml(data) {
         justify-content: space-between;
         align-items: flex-start;
         gap: 0.2in;
+        break-after: avoid;
       }
 
       .role {
@@ -169,6 +174,7 @@ function renderResumeHtml(data) {
         margin-top: 0.01in;
         margin-bottom: 0.01in;
         color: var(--muted);
+        break-after: avoid;
       }
 
       .dates {
@@ -352,7 +358,7 @@ function buildDocxParagraphs(data) {
           color: "12456E"
         })
       ],
-      spacing: { after: 180 },
+      spacing: { after: 100 },
       border: {
         bottom: {
           color: "D7DEE6",
@@ -371,7 +377,7 @@ function buildDocxParagraphs(data) {
     }),
     new Paragraph({
       text: data.summary,
-      spacing: { after: 180 }
+      spacing: { after: 80 }
     })
   );
 
@@ -390,7 +396,7 @@ function buildDocxParagraphs(data) {
           new TextRun({ text: `${row.label}: `, bold: true }),
           new TextRun({ text: row.values })
         ],
-        spacing: { after: 35 }
+        spacing: { after: 10 }
       })
     );
   }
@@ -399,26 +405,28 @@ function buildDocxParagraphs(data) {
     new Paragraph({
       text: "EXPERIENCE",
       heading: HeadingLevel.HEADING_2,
-      spacing: { before: 180, after: 80 }
+      spacing: { before: 100, after: 40 }
     })
   );
 
   for (const [index, exp] of data.experiences.entries()) {
     children.push(
       new Paragraph({
+        keepNext: true,
         children: [
           new TextRun({ text: exp.title, bold: true }),
           new TextRun({ text: `\t${exp.dates}`, color: "4B5A6A", italics: true })
         ],
-        tabStops: [{ type: TabStopType.RIGHT, position: 9300 }],
-        spacing: { after: 15 }
+        tabStops: [{ type: TabStopType.RIGHT, position: 10800 }],
+        spacing: { before: index === 0 ? 0 : 70, after: 0 }
       })
     );
 
     if (exp.company) {
       children.push(
         new Paragraph({
-          spacing: { after: 30 },
+          keepNext: true,
+          spacing: { after: 10 },
           children: [new TextRun({ text: exp.company, color: "4B5A6A" })]
         })
       );
@@ -432,14 +440,11 @@ function buildDocxParagraphs(data) {
             reference: "resume-bullets",
             level: 0
           },
-          spacing: { after: 15 }
+          spacing: { after: 0 }
         })
       );
     }
 
-    if (index < data.experiences.length - 1) {
-      children.push(new Paragraph({ text: "", spacing: { after: 25 } }));
-    }
   }
 
   return children;
@@ -471,12 +476,12 @@ async function writeDocx(data, outputPath) {
         document: {
           run: {
             font: "Calibri",
-            size: 22,
+            size: 21,
             color: "121820"
           },
           paragraph: {
             spacing: {
-              line: 264
+              line: 240
             }
           }
         }
