@@ -31,7 +31,7 @@ function charCount(text, limit) {
 }
 
 async function extractData() {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ channel: "chrome" });
 
   try {
     const page = await browser.newPage({
@@ -180,7 +180,7 @@ const EXPERIENCE_SKILLS = [
     ]
   },
   {
-    match: "EY Design Studio",
+    match: "Intuitive Company",
     skills: [
       "Software Architecture",
       "AngularJS",

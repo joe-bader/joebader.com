@@ -7,8 +7,7 @@
   "scripts": {
     "generate:resume": "node scripts/generate-resume.js",
     "generate:cover-letter": "node scripts/generate-cover-letter.js",
-    "linkedin": "node scripts/linkedin-copy.js",
-    "setup:resume-tool": "playwright install chromium"
+    "linkedin": "node scripts/linkedin-copy.js"
   },
   "dependencies": {
     "docx": "^9.5.1",

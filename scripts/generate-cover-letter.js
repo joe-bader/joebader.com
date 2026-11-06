@@ -11,17 +11,15 @@ const outputDir = path.join(projectRoot, "dist", "cover-letter");
 const letter = {
   name: "Joe Bader",
   contact: "Philadelphia, PA | joseph.bader@gmail.com | joebader.com | linkedin.com/in/josephbader",
-  date: "July 22, 2026",
-  subject:
-    "Re: Sr. Manager, Conversational Platforms — Software Development & Engineering (R440854)",
+  date: "November 6, 2026",
+  subject: "Re: Agentic AI Engineer - Senior Manager, EY Challenger",
   salutation: "Dear Hiring Team,",
   paragraphs: [
-    "Comcast is where I did some of the best work of my career. Across two engagements totaling nearly four years, I was a lead engineer on the redesign and re-architecture of Xfinity My Account — work that earned a Creativity International Gold Award — and later a lead on digital sales and account-management initiatives including Buy Online, Pick Up In-Store. I know how Comcast ships software at scale, and I'd welcome the chance to bring that experience back — this time to conversational platforms.",
-    "Two threads of my recent work converge on this role.",
-    "First, engineering management. As Senior Manager at Riskonnect, I led and mentored five cross-functional teams supporting a core B2B SaaS platform. I implemented DORA-based delivery metrics that improved lead time for changes by 4x and on-time delivery from 30% to 95%, served as senior architecture reviewer for high-impact initiatives, and scaled AI-assisted development practices that raised pull request throughput by 40%.",
-    "Second, conversational AI — built from first principles. As founder of Tuner Logic, I designed and shipped a production conversational assistant: an LLM co-tuner with function calling grounded in live telemetry, server-side provider proxying across Anthropic and OpenAI, usage-metered billing, and nightly automated model evaluations. I understand conversation design, tool orchestration, evaluation, and cost control because I built each layer myself.",
-    "To be direct about the posting's stack: my conversational AI work has been on Anthropic and OpenAI APIs and Cloudflare rather than Dialogflow and GCP, and my recent depth is TypeScript over Python. What I offer instead is experience one level below the frameworks — the patterns Dialogflow abstracts are ones I've implemented by hand — and a career of moving productively across stacks (.NET, Ruby, PHP, JavaScript). I ramp fast, and I'm honest about where I'm ramping.",
-    "I'd love to talk about what your teams are building."
+    "I'm excited to apply for the Agentic AI Engineer - Senior Manager role on the Challenger team. The role is about building agents that carry real work through to a checked result and stay safe when something fails. That is what I have spent the past 16 months building hands-on, after four years leading engineering teams.",
+    "I come to this as a manager who still builds. As Senior Manager at Riskonnect, I led and mentored five cross-functional teams, raised on-time delivery from 30% to 95%, improved lead time for changes by 4x, and lifted pull request throughput by 40%. I also helped introduce AI-assisted engineering practices and reported delivery and risk to executives.",
+    "As founder of Tuner Logic, I built an AI assistant for engine tuning, where a wrong answer can damage an engine. Safety checks run in regular code, not the model, and nothing is applied until the user accepts it. I also built the platform that develops the product: coding agents write 100% of the commits, more than 3,300 so far, under my direction and review, and no agent can approve its own work.",
+    "Earlier, I spent nearly four years as a lead engineer on Comcast platforms serving millions of customers, ran two small consultancies, and led client engagements as technical lead at Intuitive Company, which later became part of EY. That history is a big part of why Challenger appeals to me. Small teams testing ideas with real clients is familiar ground, and it is the work I want to do more of.",
+    "Thank you for your time and consideration. I'd welcome the chance to talk about what Challenger is building and how I could help."
   ],
   closing: "Sincerely,",
   signature: "Joe Bader"
@@ -135,7 +133,7 @@ function renderLetterHtml(data) {
 }
 
 async function writePdf(html, outputPath) {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ channel: "chrome" });
 
   try {
     const page = await browser.newPage({
@@ -163,7 +161,7 @@ async function main() {
   await fs.mkdir(outputDir, { recursive: true });
 
   const html = renderLetterHtml(letter);
-  const pdfPath = path.join(outputDir, "joe-bader-cover-letter-comcast.pdf");
+  const pdfPath = path.join(outputDir, "joe-bader-cover-letter-ey.pdf");
 
   await writePdf(html, pdfPath);
 
@@ -176,8 +174,8 @@ main().catch((error) => {
   console.error("Cover letter export failed.");
   console.error(message);
 
-  if (message.includes("Executable doesn't exist")) {
-    console.error("Run: npm run setup:resume-tool");
+  if (message.includes("is not found")) {
+    console.error("This script uses your installed Google Chrome. Install Chrome and run it again.");
   }
 
   process.exit(1);

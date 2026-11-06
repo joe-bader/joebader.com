@@ -24,7 +24,6 @@ Generate a polished resume in both PDF and Word formats directly from `index.htm
 
 ```bash
 npm install
-npm run setup:resume-tool
 npm run generate:resume
 ```
 
@@ -35,7 +34,7 @@ Outputs are written to `dist/resume/` as:
 
 Notes:
 
-- `setup:resume-tool` installs Playwright's Chromium binary (one-time setup per machine).
+- The export scripts use your installed Google Chrome, so Chrome must be installed.
 - Re-run `npm run generate:resume` whenever your site content changes.
 
 ### Formspree (contact form)

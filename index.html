@@ -107,19 +107,23 @@ joebader.com - Resume Site
         <a class="resume-download-link" href="resume/resume.pdf" download>Download PDF Resume</a>
         <a class="resume-download-link" href="resume/resume.docx" download>Download Word Resume</a>
       </div>
-      <p class="hero-tagline">Principal Engineer building production AI agents, their evaluations, and the controls that keep them safe</p>
+      <p class="hero-tagline">Engineering leader and hands-on builder of production AI agents, their evaluations, and their safety controls</p>
     </section>
 
     <section class="summary section" id="summary" aria-labelledby="summary-heading">
       <h2 id="summary-heading" class="section-heading">Summary</h2>
       <p class="summary-text">
-        Hands-on principal engineer and engineering leader with 20+ years building and running production systems, now focused on AI agents that finish real work safely. As founder of Tuner Logic, built a safety-sensitive AI assistant and the multi-agent platform that develops it, where agents author 100% of commits under sandboxing, scoped permissions, and human review. Previously led five engineering teams at Riskonnect and spent four years on Comcast platforms serving millions of customers. Earlier, technical lead at Intuitive Company, now EY Design Studio.
+        Engineering leader with 20+ years building teams and production systems, now focused on AI agents that finish real work safely. As Senior Manager at Riskonnect, led and mentored five engineering teams, raised on-time delivery from 30% to 95%, and helped introduce AI-assisted engineering. As founder of Tuner Logic, personally built a safety-sensitive AI assistant and the multi-agent platform that develops it, where agents author 100% of commits in isolated environments, with limited permissions and human review. Earlier, led client engagements as technical lead at Intuitive Company, now part of EY.
       </p>
     </section>
 
     <section class="technical section" id="technical" aria-labelledby="technical-heading">
       <h2 id="technical-heading" class="section-heading">Technical Background</h2>
       <dl class="technical-grid">
+        <div class="technical-category">
+          <dt class="technical-label">Leadership</dt>
+          <dd class="technical-values">Team leadership and mentoring, executive and stakeholder communication, roadmap planning, architecture review, DORA metrics and OKRs, resource allocation</dd>
+        </div>
         <div class="technical-category">
           <dt class="technical-label">Agent Engineering</dt>
           <dd class="technical-values">Model APIs (Cloudflare Workers AI, Anthropic, OpenAI), tool calling, structured outputs (Zod), context engineering, model routing, multi-agent orchestration, Agent Client Protocol (ACP), Claude Code, Codex</dd>
@@ -129,16 +133,12 @@ joebader.com - Resume Site
           <dd class="technical-values">Task-based evals, tool-call trajectory scoring, regression guards, sandboxed execution, scoped bot identities, human approval gates, audit logging</dd>
         </div>
         <div class="technical-category">
-          <dt class="technical-label">Languages</dt>
-          <dd class="technical-values">TypeScript, JavaScript, Python, SQL, Bash, Ruby, .NET, PHP</dd>
-        </div>
-        <div class="technical-category">
-          <dt class="technical-label">Frameworks</dt>
-          <dd class="technical-values">React, Node.js, Hono, Drizzle, Ruby on Rails</dd>
+          <dt class="technical-label">Languages & Frameworks</dt>
+          <dd class="technical-values">TypeScript, JavaScript, Python, SQL, Bash, Ruby, .NET, PHP; React, Node.js, Hono, Drizzle, Rails</dd>
         </div>
         <div class="technical-category">
           <dt class="technical-label">Cloud & Infrastructure</dt>
-          <dd class="technical-values">Cloudflare (Workers, D1, R2), AWS, Azure, Heroku, Linux, Docker, Podman, Kubernetes, Terraform, Ansible, systemd, New Relic</dd>
+          <dd class="technical-values">Cloudflare (Workers, D1, R2), AWS, Azure, Linux, Docker, Podman, Kubernetes, Terraform</dd>
         </div>
         <div class="technical-category">
           <dt class="technical-label">CI/CD & Testing</dt>
@@ -158,15 +158,14 @@ joebader.com - Resume Site
         </div>
         <ul class="experience-bullets">
           <li>Founded Tuner Logic, an AI-assisted SaaS for automotive performance tuning, where a wrong answer can damage an engine. Sole architect of the product and its delivery platform, from concept through production deployment (3,300+ agent-authored commits under my direction and review).</li>
-          <li>Built the product's AI assistant as a server-side agent loop in TypeScript on Cloudflare Workers. The model answers tuning questions by calling 13 typed tools over the user's own calibration, log, and dyno data, with schema-validated output and a hard cap on tool rounds that forces a final answer.</li>
-          <li>Kept the model away from decisions where it could do harm. Corrections and safety checks run in deterministic code that the model calls as tools, model-written values for fuel, ignition, and boost tables are withheld, and no edit is applied until the user reviews and accepts it. Unsafe requests are refused by rule, in ten languages.</li>
-          <li>Made model selection evidence-based with a nightly evaluation that runs every candidate model through realistic tasks and scores the full sequence of tool calls with fixed checks instead of an LLM judge. Results change production routing only through a pull request that a person reviews.</li>
-          <li>Built a model router that balances capability, speed, and cost for each task and uses production telemetry to sideline a model that starts returning malformed tool calls, empty responses, or errors, restoring it once it recovers.</li>
-          <li>Built the multi-agent platform that develops the product: labeling an issue starts a supervised coding agent in its own isolated workspace, using any of six agent CLIs. Agents author 100% of commits, and any session can be watched or taken over from a dashboard or phone.</li>
-          <li>Made long-running agent work recoverable: prompts are queued durably, dispatch is idempotent, and stuck sessions are reclaimed automatically. Several of these safeguards came from diagnosing live failures (leaked worker slots, an exhausted port pool, stalled reviews) and shipping fixes with regression tests.</li>
-          <li>Limited what each agent can do. Coding and review agents have separate scoped identities, so the agent that writes code cannot approve it and the reviewer cannot push. Review agents run in per-session sandboxes without a source checkout and treat pull request content as untrusted input.</li>
-          <li>Automated the path to production without giving up control. A merge queue lands only pull requests approved at their exact commit (250+ batches in its first two weeks), retries infrastructure failures, and isolates the offending change when a batch fails. A Python release broker keeps production credentials out of CI.</li>
-          <li>Held the product to safety-engineering standards: a 100% backend test-coverage floor, ISO 26262-inspired coverage targets for domain code, production health checks every five minutes, and rehearsed restore drills.</li>
+          <li>Built the product's AI assistant in TypeScript on Cloudflare Workers. It answers tuning questions by calling 13 tools that read the user's own calibration, log, and dyno data, checks each response against a fixed format, and limits how many steps it can take.</li>
+          <li>Kept the model away from decisions where it could do harm. Corrections and safety checks are calculated by regular code, not the model. Values the model writes for fuel, ignition, and boost tables are held back, and no edit is applied until the user reviews and accepts it. Unsafe requests are refused by fixed rules, in ten languages.</li>
+          <li>Chose models on evidence. A nightly test runs each candidate model through realistic tasks and checks every step it takes against fixed rules, not another model's opinion. Model changes go through a reviewed pull request, and a model that starts failing in production is removed automatically.</li>
+          <li>Built the multi-agent platform that develops the product. Labeling an issue starts a supervised coding agent in its own isolated copy of the code, using any of six coding-agent tools. Agents author 100% of commits, and any session can be watched or taken over from a dashboard or phone.</li>
+          <li>Made long-running agent work recoverable: instructions are saved before an agent starts, the same task never starts twice, and stuck sessions are cleaned up automatically. Added these safeguards after diagnosing live failures, with tests to prevent repeats.</li>
+          <li>Limited what each agent can do. Coding and review agents use separate accounts with narrow permissions, so the agent that writes code cannot approve it and the reviewer cannot change it. Review agents run in isolated containers and treat the content they review as untrusted.</li>
+          <li>Automated the path to production without giving up control. Changes merge only when the exact version being merged has been approved (250+ batches in the first two weeks). The system retries when infrastructure fails and removes the change that broke a batch. A Python release service keeps production credentials away from the build system.</li>
+          <li>Held the product to safety-engineering standards: 100% test coverage of backend code, targets modeled on the ISO 26262 automotive safety standard, health checks every five minutes, and practiced restores.</li>
         </ul>
       </article>
 
@@ -177,11 +176,13 @@ joebader.com - Resume Site
           <p class="experience-dates">12/2021 - 12/2025</p>
         </div>
         <ul class="experience-bullets">
-          <li>Led a major UI modernization using agentic AI to migrate a legacy Bootstrap interface, including inventorying, planning, and updating thousands of UI files.</li>
-          <li>Scaled AI-assisted development practices across five teams, increasing pull request throughput by 40%.</li>
           <li>Led and mentored five cross-functional engineering teams (5–8 engineers each) on a core B2B SaaS platform, improving on-time delivery from 30% to 95% while meeting reliability targets.</li>
+          <li>Mentored team leads and senior engineers, reported delivery, risk, and milestones to executives, and managed resource allocation across the five teams.</li>
+          <li>Partnered with product and engineering leadership to sequence multi-quarter initiatives and manage stakeholder communications, improving roadmap predictability.</li>
+          <li>Established engineering OKRs, delivery metrics, and review cadences that improved lead time for changes by 4x.</li>
+          <li>Increased pull request throughput by 40% across five teams by applying industry-standard engineering discipline.</li>
+          <li>Helped introduce AI-assisted engineering practices, and led a migration of a legacy Bootstrap interface carried out by AI agents across thousands of UI files.</li>
           <li>Reviewed architecture for high-impact initiatives, catching weak designs before implementation and reducing long-term platform risk.</li>
-          <li>Implemented engineering metrics and review cadences that improved lead time for changes by 4x.</li>
         </ul>
       </article>
 
@@ -193,9 +194,8 @@ joebader.com - Resume Site
         </div>
         <ul class="experience-bullets">
           <li>Delivered four high-visibility initiatives as a lead engineer across Comcast's digital sales and account management platforms, including the Allspark transformation team and Buy Online, Pick Up In-Store across five applications and services.</li>
-          <li>Implemented a scalable Consent UI handling millions of legal acceptance records.</li>
           <li>Contributed to the re-architecture of high-traffic customer-facing systems serving millions of users, reducing critical page latency and production defect rates.</li>
-          <li>Owned billing, consent, and call-center workflows tied to revenue and compliance, hardening audited workflows against compliance defects.</li>
+          <li>Owned billing, consent, and call-center workflows tied to revenue and compliance, including a Consent UI handling millions of legal acceptance records.</li>
         </ul>
       </article>
 
@@ -229,18 +229,18 @@ joebader.com - Resume Site
           <p class="experience-dates">05/2015 - 02/2016</p>
         </div>
         <ul class="experience-bullets">
-          <li>Took a prototype-stage product to market in under six months, leading performance tuning and platform hardening that supported 560% user growth and helped secure follow-on venture funding.</li>
+          <li>Took a prototype-stage product to market in under six months, leading a mixed team of engineers, contractors, and interns through platform hardening that supported 560% user growth and helped secure follow-on venture funding.</li>
         </ul>
       </article>
 
       <article class="experience-card">
         <div class="experience-header">
           <h3 class="experience-title">User Interface Architect / Tech Lead</h3>
-          <p class="experience-company">Intuitive Company (now EY Design Studio) | Philadelphia, PA</p>
+          <p class="experience-company">Intuitive Company (now part of EY) | Philadelphia, PA</p>
           <p class="experience-dates">11/2013 - 05/2015</p>
         </div>
         <ul class="experience-bullets">
-          <li>Led the technical work on multidisciplinary teams delivering custom enterprise solutions across three concurrent client engagements, planning architecture with principals and engagement leads.</li>
+          <li>Led client-facing technical delivery on multidisciplinary teams across three concurrent enterprise engagements, planning architecture with principals and engagement leads.</li>
           <li>Delivered reusable UI frameworks that made delivery more consistent, and built client relationships that led to follow-on work.</li>
         </ul>
       </article>

@@ -216,7 +216,7 @@ function renderResumeHtml(data) {
 }
 
 async function extractDataFromSite() {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ channel: "chrome" });
 
   try {
     const page = await browser.newPage({
@@ -314,7 +314,7 @@ async function extractDataFromSite() {
 }
 
 async function writePdf(html, outputPath) {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ channel: "chrome" });
 
   try {
     const page = await browser.newPage({
@@ -560,8 +560,8 @@ main().catch((error) => {
   console.error("Resume export failed.");
   console.error(message);
 
-  if (message.includes("Executable doesn't exist")) {
-    console.error("Run: npm run setup:resume-tool");
+  if (message.includes("is not found")) {
+    console.error("This script uses your installed Google Chrome. Install Chrome and run it again.");
   }
 
   process.exit(1);
