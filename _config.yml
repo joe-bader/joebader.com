@@ -1,0 +1,8 @@
+# GitHub Pages builds this site with Jekyll. Keep tooling and
+# non-site files out of the published site at joebader.com.
+exclude:
+  - cover-letter
+  - scripts
+  - package.json
+  - package-lock.json
+  - README.md
